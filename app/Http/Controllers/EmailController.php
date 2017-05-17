@@ -17,6 +17,8 @@ class EmailController extends Controller
 
 
         if (is_null($user)) {
+
+            flash('邮箱不能为空', 'danger');
             redirect('/');
         }
 
@@ -25,6 +27,8 @@ class EmailController extends Controller
         $user->save();
 
         \Auth::login($user);
+
+        flash('激活成功', 'success');
         return redirect('/home');
     }
 }

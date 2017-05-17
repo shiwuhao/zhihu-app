@@ -100,8 +100,11 @@ return [
     */
 
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
+        'email' => [
+            'unique' => '邮箱已被占用'
+        ],
+        'min' => [
+            'string' => '密码至少:min个字符',
         ],
     ],
 
