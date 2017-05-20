@@ -183,6 +183,7 @@ return [
         Laracasts\Flash\FlashServiceProvider::class,
         Overtrue\LaravelUEditor\UEditorServiceProvider::class,
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
+        Laravel\Tinker\TinkerServiceProvider::class,
 
     ],
 
