@@ -3,15 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreQuestionRequest;
-use App\Question;
-use App\Topic;
 use Illuminate\Http\Request;
+use App\Repositories\QuestionRepository;
 
 class QuestionsController extends Controller
 {
-    public function __construct()
+    protected $questionRepository;
+
+    public function __construct(QuestionRepository $questionRepository)
     {
         $this->middleware('auth')->except(['index','show']);
+        $this->questionRepository = $questionRepository;
     }
 
     /**
@@ -42,7 +44,7 @@ class QuestionsController extends Controller
      */
     public function store(StoreQuestionRequest $request)
     {
-        $topics = $this->normalizeTopic($request->topics);
+        $topics = $this->questionRepository->normalizeTopic($request->topics);
 
         $data = [
             'title' => $request->title,
@@ -50,7 +52,7 @@ class QuestionsController extends Controller
             'user_id' => \Auth::id(),
         ];
 
-        $question = Question::create($data);
+        $question = $this->questionRepository->create($data);
 
         $res = $question->topics()->attach($topics);
 
@@ -65,7 +67,7 @@ class QuestionsController extends Controller
      */
     public function show($id)
     {
-        $question = Question::where('id', $id)->with('topics')->first();
+        $question = $this->questionRepository->byIdWithTopics($id);
 
         return view('questions.show', compact('question'));
     }
@@ -78,7 +80,12 @@ class QuestionsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $question = $this->questionRepository->byId($id);
+        if (\Auth::user()->owns($question)) {
+            return view('questions.edit', compact('question'));
+        }
+
+        return back();
     }
 
     /**
@@ -88,9 +95,19 @@ class QuestionsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StoreQuestionRequest $request, $id)
     {
-        //
+        $question = $this->questionRepository->byId($id);
+        $topics    = $this->questionRepository->normalizeTopic($request->topics);
+
+        $question->update([
+            'title' => $request->title,
+            'body'  => $request->body,
+        ]);
+
+        $question->topics()->sync($topics);
+
+        return redirect("questions/{$question->id}");
     }
 
     /**
@@ -104,21 +121,4 @@ class QuestionsController extends Controller
         //
     }
 
-
-    /**
-     * 生成话题
-     * @param array $topics
-     */
-    private function normalizeTopic(array $topics)
-    {
-        return collect($topics)->map(function ($topic) {
-            if (is_numeric($topic)) {
-                Topic::find($topic)->increment('questions_count');
-                return (int)$topic;
-            }
-
-            $newTopic = Topic::create(['name' => $topic, 'questions_count' => 1]);
-            return $newTopic->id;
-        })->toArray();
-    }
 }
