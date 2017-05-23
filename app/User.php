@@ -71,8 +71,57 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+
+    /**
+     * check 用户权限
+     * @param Model $model
+     * @return bool
+     */
     public function owns(Model $model)
     {
         return $this->id == $model->user_id;
+    }
+
+
+    /**
+     * 一个用户有多个答案
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function answers()
+    {
+        return $this->hasMany(Answer::class);
+    }
+
+
+    /**
+     * 用户关注一对多
+     * @param $question
+     * @return mixed
+     */
+    public function follows()
+    {
+        return $this->belongsToMany(Question::class, 'user_question')->withTimestamps();
+    }
+
+
+    /**
+     * 关注问题
+     * @param $question
+     * @return mixed
+     */
+    public function followThis($question)
+    {
+        return $this->follows()->toggle($question);
+    }
+
+
+    /**
+     * 判断用户是否关注某个问题
+     * @param $question
+     * @return bool
+     */
+    public function followed($question)
+    {
+        return !! $this->follows()->where('question_id', $question)->count();
     }
 }

@@ -31,13 +31,60 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Query\Builder|\App\Question whereUserId($value)
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Topic[] $topics
+ * @property-read \App\User $user
+ * @method static \Illuminate\Database\Query\Builder|\App\Question published()
  */
 class Question extends Model
 {
     protected $fillable = ['title', 'body', 'user_id'];
 
+
+    /**
+     * 一个问题属于多个话题
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function topics()
     {
         return $this->belongsToMany(Topic::class)->withTimestamps();
+    }
+
+    /**
+     * 一个问题属于一个用户关系
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+
+    /**
+     * scope 查询作用域
+     * @param $query
+     * @return mixed
+     */
+    public function scopePublished($query)
+    {
+        return $query->where('is_hidden', 'F');
+    }
+
+
+    /**
+     * 定义问题与答案一对多关系
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function answers()
+    {
+        return $this->hasMany(Answer::class);
+    }
+
+
+    /**
+     * 用户关注问题 一对多
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function followers()
+    {
+        return $this->belongsToMany(User::class)->withTimestamps();
     }
 }

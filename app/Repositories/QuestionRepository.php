@@ -24,9 +24,9 @@ class QuestionRepository
      * @param $id
      * @return \Illuminate\Database\Eloquent\Model|mixed|null|static
      */
-    public function byIdWithTopics($id)
+    public function byIdWithTopicsAndAnswers($id)
     {
-        return Question::where('id', $id)->with('topics')->first();
+        return Question::where('id', $id)->with(['topics', 'answers'])->first();
     }
 
     /**
@@ -57,12 +57,19 @@ class QuestionRepository
     }
 
 
-    /**
-     * @param $id
-     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|null|static|static[]
-     */
+
     public function byId($id)
     {
         return Question::find($id);
+    }
+
+
+    /**
+     * 获取问题动态
+     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Support\Collection|static[]
+     */
+    public function getQuestionsFeed()
+    {
+        return Question::published()->latest('updated_at')->with('user')->get();
     }
 }
