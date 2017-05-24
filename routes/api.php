@@ -25,27 +25,25 @@ Route::get('/topics', function (Request $request) {
 })->middleware('api');
 
 Route::post('/question/follower', function(Request $request){
-
-    $followed =  !! \App\Follow::where('question_id', $request->get('question'))
-        ->where('user_id', $request->get('user'))
-        ->count();
+    $user = \Auth::guard('api')->user();
+    $followed =  $user->followed($request->get('question'));
 
     return response()->json(['followed' => $followed]);
 })->middleware('api');
 
 Route::post('/question/follow', function(Request $request){
+    $user = \Auth::guard('api')->user();
+    $question = \App\Question::find($request->question);
 
-    $followed =  \App\Follow::where('question_id', $request->get('question'))
-        ->where('user_id', $request->get('user'))
-        ->first();
+    $followed =  $user->followThis($request->question);
 
-    if ($followed) {
-        $followed->delete();
+    if (count($followed['detached']) > 0) {
+        $question->decrement('followers_count');
         $followed = false;
     } else {
-        \App\Follow::create(['question_id' => $request->question, 'user_id' => $request->user]);
+        $question->increment('followers_count');
         $followed = true;
     }
 
     return response()->json(['followed' => $followed]);
-})->middleware('api');
+})->middleware('auth:api');

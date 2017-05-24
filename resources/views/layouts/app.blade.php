@@ -16,6 +16,8 @@
         window.Laravel = <?php echo json_encode([
             'csrfToken' => csrf_token(),
         ]); ?>;
+
+        Laravel.apiToken = "Bearer {{ Auth::check() ? Auth::user()->api_token : '' }}";
     </script>
 </head>
 <body>

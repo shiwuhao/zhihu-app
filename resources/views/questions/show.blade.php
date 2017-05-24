@@ -90,11 +90,50 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-3">
+                <div class="panel panel-default"  style="text-align: center;">
+                    <div class="panel-heading">
+                        <h5>关于作者</h5>
+                    </div>
+                    <div class="panel-body">
+                        <div class="media">
+                            <a class="media-left" href="#">
+                                <img src="{{ $question->user->avatar }}" style="width: 64px; height: 64px;" align="{{ $question->user->name }}">
+                            </a>
+                            <div class="media-body">
+                                <h4 class="media-heading">
+                                    <a href="">{{ $question->user->name }}</a>
+                                </h4>
+                            </div>
+                            <div class="user-statics" >
+                                <div class="statics-item text-center">
+                                    <div class="statics-text">问题</div>
+                                    <div class="statics-count">{{ $question->user->questions_count }}</div>
+                                </div>
+                                <div class="statics-item text-center">
+                                    <div class="statics-text">回答</div>
+                                    <div class="statics-count">{{ $question->user->answers_count }}</div>
+                                </div>
+                                <div class="statics-item text-center">
+                                    <div class="statics-text">关注者</div>
+                                    <div class="statics-count">{{ $question->user->followers_count }}</div>
+                                </div>
+                            </div>
+
+                            <a href="#editor" class="btn btn-primary">赚些答案</a>
+                            <a href="#editor" class="btn btn-primary">赚些答案</a>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 @endsection
 
 @section('js')
+    @if(Auth::check())
     @include('vendor.ueditor.assets')
     <script type="text/javascript">
         var ue = UE.getEditor('container',{
@@ -112,4 +151,5 @@
             ue.execCommand('serverparam', '_token', '{{ csrf_token() }}'); // 设置 CSRF token.
         });
     </script>
+    @endif
 @endsection

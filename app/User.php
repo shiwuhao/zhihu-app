@@ -48,6 +48,10 @@ use PhpParser\Node\Expr\AssignOp\Mod;
  * @method static \Illuminate\Database\Query\Builder|\App\User whereSettings($value)
  * @method static \Illuminate\Database\Query\Builder|\App\User whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property string $api_token
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Answer[] $answers
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Question[] $follows
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereApiToken($value)
  */
 class User extends Authenticatable
 {
@@ -59,7 +63,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'avatar', 'confirmation_token',
+        'name', 'email', 'password', 'avatar', 'confirmation_token','api_token',
     ];
 
     /**
@@ -114,7 +118,6 @@ class User extends Authenticatable
         return $this->follows()->toggle($question);
     }
 
-
     /**
      * 判断用户是否关注某个问题
      * @param $question
@@ -123,5 +126,15 @@ class User extends Authenticatable
     public function followed($question)
     {
         return !! $this->follows()->where('question_id', $question)->count();
+    }
+
+
+    /**
+     * 用户关注关系 一对多
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function followers()
+    {
+        return $this->belongsToMany(self::class, 'followers', 'follower_id', 'followed_id')->withTimestamps();
     }
 }

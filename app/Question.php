@@ -33,6 +33,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Topic[] $topics
  * @property-read \App\User $user
  * @method static \Illuminate\Database\Query\Builder|\App\Question published()
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Answer[] $answers
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\User[] $followers
  */
 class Question extends Model
 {
