@@ -23,3 +23,29 @@ Route::get('/topics', function (Request $request) {
 
     return $topics;
 })->middleware('api');
+
+Route::post('/question/follower', function(Request $request){
+
+    $followed =  !! \App\Follow::where('question_id', $request->get('question'))
+        ->where('user_id', $request->get('user'))
+        ->count();
+
+    return response()->json(['followed' => $followed]);
+})->middleware('api');
+
+Route::post('/question/follow', function(Request $request){
+
+    $followed =  \App\Follow::where('question_id', $request->get('question'))
+        ->where('user_id', $request->get('user'))
+        ->first();
+
+    if ($followed) {
+        $followed->delete();
+        $followed = false;
+    } else {
+        \App\Follow::create(['question_id' => $request->question, 'user_id' => $request->user]);
+        $followed = true;
+    }
+
+    return response()->json(['followed' => $followed]);
+})->middleware('api');

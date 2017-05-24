@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-    @include('vendor.ueditor.assets')
     <div class="container">
         <div class="row">
             <div class="col-md-8 col-md-offset-1">
@@ -39,9 +38,7 @@
                         <span>关注者</span>
                     </div>
                     <div class="panel-body">
-                        <a href="{{ url('questions/'.$question->id.'/follow') }}" class="btn {{ Auth::check() && Auth::user()->followed($question->id) ? 'btn-success' : 'btn-default' }}">
-                            {{ Auth::check() && Auth::user()->followed($question->id) ? '已关注' : '关注该问题' }}
-                        </a>
+                        <question-follow-button question="{{ $question->id }}" user="{{ Auth::id() }}"></question-follow-button>
                         <a href="#editor" class="btn btn-primary">赚些答案</a>
                     </div>
                 </div>
@@ -98,6 +95,7 @@
 @endsection
 
 @section('js')
+    @include('vendor.ueditor.assets')
     <script type="text/javascript">
         var ue = UE.getEditor('container',{
             toolbars: [
