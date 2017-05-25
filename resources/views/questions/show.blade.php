@@ -120,7 +120,7 @@
                                 </div>
                             </div>
 
-                            <a href="#editor" class="btn btn-primary">赚些答案</a>
+                            <user-follow-button user="{{ $question->user->id }}"></user-follow-button>
                             <a href="#editor" class="btn btn-primary">赚些答案</a>
                         </div>
 
