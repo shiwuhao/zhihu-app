@@ -2,10 +2,13 @@
 
 namespace App\Notifications;
 
+use App\Channels\SendcloundChannel;
+use App\Mailer\UserMailer;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Naux\Mail\SendCloudTemplate;
 
 class NewUserFollowNotification extends Notification
 {
@@ -29,7 +32,12 @@ class NewUserFollowNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['database'];
+        return ['database', SendcloundChannel::class];
+    }
+
+    public function toSendcloud($notifiable)
+    {
+        return (new UserMailer())->followNotifyEmail($notifiable->email);
     }
 
     public function toDatabase($notifiable)
