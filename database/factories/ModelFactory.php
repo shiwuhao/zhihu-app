@@ -18,8 +18,20 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
-        'password' => $password ?: $password = bcrypt('secret'),
+        'avatar' => '/avatars/default.png',
+        'password' => $password ?: $password = bcrypt('111111'),
         'remember_token' => str_random(10),
+        'confirmation_token' => '',
+        'api_token' => str_random(64),
+    ];
+});
+
+$factory->define(App\Question::class, function (Faker\Generator $faker) {
+    $userIds = array_column(\App\User::all()->toArray(), 'id');
+    return [
+        'title' => $faker->word,
+        'body'  => $faker->paragraph,
+        'user_id'  => $faker->randomElement($userIds),
     ];
 });
 

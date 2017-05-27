@@ -52,6 +52,8 @@ use PhpParser\Node\Expr\AssignOp\Mod;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Answer[] $answers
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Question[] $follows
  * @method static \Illuminate\Database\Query\Builder|\App\User whereApiToken($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\User[] $followers
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\User[] $followersUser
  */
 class User extends Authenticatable
 {

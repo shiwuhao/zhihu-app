@@ -14,6 +14,11 @@ use App\User;
 class UserRepository
 {
 
+
+    /**
+     * @param $id
+     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|null|static|static[]
+     */
     public function byId($id)
     {
         return User::find($id);
