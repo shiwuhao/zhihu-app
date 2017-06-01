@@ -53,9 +53,9 @@
 
                         @foreach($question->answers as $answer)
                             <div class="media" style="margin: 10px 0;">
-                                <a class="media-left" href="">
-                                    <img src="{{ $question->user->avatar }}" style="width: 32px; height: 32px;" alt="{{ $question->user->name }}">
-                                </a>
+                                <div class="media-left">
+                                    <user-vote-button answer="{{ $answer->id }}" count="{{ $answer->votes_count }}"></user-vote-button>
+                                </div>
                                 <div class="media-body">
                                     <h4 class="media-heading">
                                         <a href="{{ url('user/'.$question->user->id) }}">
@@ -121,7 +121,7 @@
                             </div>
 
                             <user-follow-button user="{{ $question->user->id }}"></user-follow-button>
-                            <a href="#editor" class="btn btn-primary">赚些答案</a>
+                            <send-message user="{{ $question->user_id }}"></send-message>
                         </div>
 
 

@@ -23,4 +23,15 @@ class AnswerRepository
     {
         return Answer::create($attributes);
     }
+
+
+    /**
+     *
+     * @param $id
+     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|null|static|static[]
+     */
+    public function byId($id)
+    {
+        return Answer::find($id);
+    }
 }
