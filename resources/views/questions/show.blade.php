@@ -28,6 +28,7 @@
                                 <button type="submit" class="btn btn-danger btn-xs">删除</button>
                             </form>
                         @endif
+                            <comments type="question" model="{{ $question->id }}" count="{{ $question->comments()->count() }}"></comments>
                     </div>
                 </div>
             </div>
@@ -63,6 +64,7 @@
                                         </a>
                                     </h4>
                                 </div>
+                                <comments type="answer" model="{{ $answer->id }}" count="{{ $answer->comments()->count() }}"></comments>
                             </div>
 
                         @endforeach

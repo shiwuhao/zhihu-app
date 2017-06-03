@@ -18,6 +18,13 @@
         ]); ?>;
 
         Laravel.apiToken = "Bearer {{ Auth::check() ? Auth::user()->api_token : '' }}";
+
+        @if(Auth::check())
+            window.Zhihu = {
+                name:'{{ Auth::user()->name }}',
+                avatar:'{{ Auth::user()->avatar }}',
+            };
+        @endif
     </script>
 </head>
 <body>

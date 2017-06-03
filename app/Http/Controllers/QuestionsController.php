@@ -129,5 +129,4 @@ class QuestionsController extends Controller
 
         abort(403, 'Forbidden');
     }
-
 }
