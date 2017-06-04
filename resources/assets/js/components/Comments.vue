@@ -45,13 +45,6 @@
             return {
                 body:'',
                 comments:[],
-                newComment:{
-                    user:{
-                        name:Zhihu.name,
-                        avatar:Zhihu.avatar
-                    },
-                    body:''
-                },
                 newCount:this.count
             }
         },
@@ -70,8 +63,14 @@
         methods:{
             store(){
                 this.$http.post('/api/comment', {'type':this.type, 'model':this.model, 'body':this.body}).then(response => {
-                    this.newComment.body = response.data.body;
-                    this.comments.push(this.newComment);
+                    let newComment ={
+                            user:{
+                                name:Zhihu.name,
+                                avatar:Zhihu.avatar
+                            },
+                            body:response.data.body
+                        };
+                    this.comments.push(newComment);
                     this.body = '';
                     this.newCount++;
                 });

@@ -17,4 +17,30 @@ class MessageRepository
     {
         return Message::create($attributes);
     }
+
+    public function getAllMessage()
+    {
+        $userId = \Auth::id();
+        $messages = Message::where('to_user_id', $userId)
+            ->orWhere('from_user_id', $userId)
+            ->with(['fromUser' =>function($query) {
+                return $query->select('id', 'name', 'avatar');
+            }, 'toUser' => function($query) {
+                return $query->select('id', 'name', 'avatar');
+            }])
+            ->latest()
+            ->get();
+
+        return $messages;
+    }
+
+    public function getDialogMessageBy($dialogId)
+    {
+        return Message::where('dialog_id', $dialogId)->orderBy('id','desc')->get();
+    }
+
+    public function getSingleMessageBy($dialogId)
+    {
+        return Message::where('dialog_id', $dialogId)->first();
+    }
 }

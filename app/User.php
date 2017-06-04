@@ -68,6 +68,10 @@ class User extends Authenticatable
         'name', 'email', 'password', 'avatar', 'confirmation_token','api_token',
     ];
 
+    protected $casts = [
+        'settings' => 'array'
+    ];
+
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -183,5 +187,10 @@ class User extends Authenticatable
     public function messages()
     {
         return $this->hasMany(Message::class, 'to_user_id');
+    }
+
+    public function settings()
+    {
+        return new Setting($this);
     }
 }
