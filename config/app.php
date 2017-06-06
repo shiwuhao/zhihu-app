@@ -185,7 +185,7 @@ return [
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         Laravel\Tinker\TinkerServiceProvider::class,
 
-        Overtrue\LaravelFilesystem\Qiniu\QiniuStorageServiceProvider::class,
+//        Overtrue\LaravelFilesystem\Qiniu\QiniuStorageServiceProvider::class,
 
     ],
 
