@@ -11,6 +11,12 @@
 |
 */
 
+Route::get('/package', function(){
+    return view('menu.index');
+});
+
+
+
 Route::get('/', 'QuestionsController@index');
 
 Auth::routes();

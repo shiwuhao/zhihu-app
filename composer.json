@@ -8,6 +8,7 @@
         "php": ">=5.6.4",
         "laracasts/flash": "^3.0",
         "laravel/framework": "5.4.*",
+        "lavary/laravel-menu": "^1.6",
         "naux/sendcloud": "^1.1",
         "overtrue/laravel-filesystem-qiniu": "^0.0.2",
         "overtrue/laravel-ueditor": "~1.0"
